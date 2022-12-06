@@ -1,6 +1,4 @@
-# basic react.js-node.js-blog
-basic blog
-<br>
+# basic-blog
 ### Technologies used: Node.js React.Js and Mysql <br>
 The first thing I did after learning about React.js and Node.js is a simple blogging system. The system has shortcomings. It was made only on post publishing. In addition, simple security measures and authorization have been made.
 <h5>
