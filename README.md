@@ -6,3 +6,14 @@ He taught me how to combine a front-end application with a back-end application.
 <h5>
 It is also a frontend application where I learned more comfortably how to connect the simple restful api I wrote earlier with Node.js
 <h/5>
+
+## basic_blog_table
+
+| users | posts |
+| -----------------|------|
+| id | title|
+| username | desc| 
+| email | img|
+| password | date|
+| img | uid|
+| | cat|
