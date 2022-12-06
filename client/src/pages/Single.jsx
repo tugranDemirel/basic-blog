@@ -1,53 +1,64 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useContext, useEffect, useState} from 'react';
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import edit from '../img/edit.png'
 import Delete from '../img/delete.png'
 import Menu from "../components/Menu";
+import axios from "axios";
+import moment from "moment";
+import {AuthContext} from "../context/authContext";
 const Single = () => {
+    const [post, setPost] = useState({})
+    const location = useLocation()
+    const navigate = useNavigate()
+    const postId = location.pathname.split("/")[2]
+    const {currentUser} = useContext(AuthContext)
+    useEffect(() => {
+        const fetchData = async  () => {
+            try{
+                const res = await axios.get(`/posts/${postId}`)
+                setPost(res.data)
+            }catch (e) {
+                console.log(e)
+            }
+        }
+        fetchData()
+    }, [postId])
+
+    const handleDelete = async () => {
+        try{
+            await axios.delete(`/posts/${postId}`)
+            navigate('/')
+        }catch (e) {
+            console.log(e)
+        }
+    }
+
+    const getText = (html) => {
+        const doc = new DOMParser().parseFromString(html, "text/html")
+        return  doc.body.textContent
+    }
     return (
         <div className="single">
             <div className="content">
-                <img src="https://images.pexels.com/photos/7008010/pexels-photo-7008010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt=""/>
+                <img src={`../upload/${post?.img}`} alt=""/>
                 <div className="user">
-                    <img src="https://archives.bulbagarden.net/media/upload/thumb/a/a8/Diamond_Pearl_Flint.png/150px-Diamond_Pearl_Flint.png" alt=""/>
+                    <img src={post.userImg} alt=""/>
                     <div className="info">
-                        <span>Tuğran</span>
-                        <p>2 gün önce yayınlandı</p>
+                        <span>{post.username}</span>
+                        <p>{moment(post.date).fromNow()}</p>
                     </div>
-                    <div className="edit">
-                        <Link to={`/write?edit=2`}>
+                    { currentUser.username === post.username && <div className="edit">
+                        <Link to={`/write?edit=${post.id}`} state={post}>
                             <img src={edit} alt=""/>
                         </Link>
-                        <img src={Delete } alt=""/>
-                    </div>
+                        <img onClick={handleDelete} src={Delete } alt=""/>
+                    </div> }
                 </div>
-                <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt doloribus earum fugit iste laboriosam maxime ratione reprehenderit suscipit veniam voluptatibus! Delectus dolor eius est harum, similique sit voluptas. Nisi, vitae!
-                </h1>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                   <br/><br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                   <br/><br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                   <br/><br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                   <br/><br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                   <br/><br/>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis dolores magnam optio voluptatem? Atque consequuntur cupiditate deleniti, deserunt dolores eligendi, expedita in laboriosam maxime molestiae nesciunt nostrum officia quidem repudiandae.
-                   <br/><br/>
-                </p>
+                <h1>{ getText(post.title) }</h1>
+                {getText(post.desc)}
             </div>
             <div className="menu">
-                <Menu/>
+                <Menu post={post.cat}/>
             </div>
         </div>
     )
